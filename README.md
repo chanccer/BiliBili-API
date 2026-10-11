@@ -110,6 +110,12 @@ WBI 签名算法（`wts` / `w_rid` / 密钥重排表 `MIXIN_KEY_ENC_TAB`）出�
 > ② `fav/resource/list` 的空 `medias` 分两种：`info.media_count > 0` 却一条不给 ⇒ **抛**（多半是 `pn` 越界），
 > `media_count = 0` 的空夹 ⇒ **正常返回空列表**。⇒ 判据是**先看码、再看长度**。
 
+## UP 主签名采集工具
+
+Fork 新增的独立工具见 [tools/up-signature-crawler](tools/up-signature-crawler/README.md)。
+从公开榜单、热门视频和关键词视频搜索发现作者，保存最新签名及基本资料到 SQLite，支持 CSV 导出和断点续跑。
+默认目标为 1000 位不同作者；该发现方式不保证全站全量覆盖，遇到风控会保存进度并停止。
+
 ## 功能特性
 
 - **用户信息获取**：获取用户名称、头像、等级、签名、粉丝数等基本信息

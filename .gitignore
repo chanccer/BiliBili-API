@@ -50,3 +50,18 @@ build/
 /REFACTOR_PLAN_REVIEW.md
 /INTERFACE_PLAN.md
 *.tmp.txt
+
+### Local crawler output and credentials ###
+**/data/
+*.sqlite
+*.sqlite-*
+*.db
+*.db-*
+*.csv
+*.log
+*.lock
+*.cookie
+cookie.txt
+cookies.txt
+credentials/
+hs_err_pid*
