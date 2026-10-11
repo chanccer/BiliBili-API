@@ -48,6 +48,8 @@ Fields: `uid`, `name`, `sign`, `face`, `followers`, `archive_count`, `space_url`
 is preserved verbatim, including emoji and line breaks. An empty signature is valid;
 a missing signature is an error. Failed requests never replace existing profiles.
 SQLite stores only the latest profile, without signature history.
+The database uses SQLite rollback journaling for Docker bind-mount compatibility.
+Open/query it after the crawler exits; use the progress log to monitor active runs.
 
 Repeat the same crawl command to resume. `--target` counts **all** saved UIDs,
 including previous runs; a 10-author preflight followed by `--target 1000` adds

@@ -18,6 +18,20 @@ class StoreTest {
     @TempDir Path dir;
     final Api.Source source = new Api.Source("popular", "popular", "", 2);
 
+    @Test void usesRollbackJournalForCrossPlatformBindMountCompatibility() throws Exception {
+        Path file = dir.resolve("profiles.sqlite");
+        try (Store store = new Store(file);
+             var connection = DriverManager.getConnection("jdbc:sqlite:" + file);
+             var stmt = connection.createStatement(); var rows = stmt.executeQuery("PRAGMA journal_mode")) {
+            assertTrue(rows.next());
+            assertEquals("delete", rows.getString(1));
+            discover(store, 7);
+            store.save(profile(7, "sign"));
+            assertFalse(Files.exists(Path.of(file + "-wal")));
+            assertFalse(Files.exists(Path.of(file + "-shm")));
+        }
+    }
+
     void discover(Store store, long... ids) throws Exception {
         store.configure(List.of(source));
         var authors = java.util.Arrays.stream(ids).mapToObj(uid -> new Api.Author(uid, source.key())).toList();

@@ -27,7 +27,8 @@ final class Store implements AutoCloseable {
         db = DriverManager.getConnection("jdbc:sqlite:" + file.toAbsolutePath());
         try (var stmt = db.createStatement()) {
             stmt.execute("PRAGMA busy_timeout=5000");
-            stmt.execute("PRAGMA journal_mode=WAL");
+            // Rollback journaling avoids cross-OS shared-memory WAL issues on Docker bind mounts.
+            stmt.execute("PRAGMA journal_mode=DELETE");
             stmt.execute("PRAGMA foreign_keys=ON");
             try (var rs = stmt.executeQuery("PRAGMA user_version")) {
                 rs.next();
